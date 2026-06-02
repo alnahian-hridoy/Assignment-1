@@ -60,12 +60,12 @@ jobs:
     - name: Start Backend
       run: |
         cd backend
-        pm2 start "npm run start" --name backend --error $HOME/.pm2/logs/backend-error.log --out $HOME/.pm2/logs/backend-out.log
+        pm2 start npm --name backend -- run start --error $HOME/.pm2/logs/backend-error.log --out $HOME/.pm2/logs/backend-out.log
       continue-on-error: false
 
     - name: Start Frontend
       run: |
-        pm2 serve frontend/build 3000 --name frontend --spa --error $HOME/.pm2/logs/frontend-error.log --out $HOME/.pm2/logs/frontend-out.log
+        pm2 serve frontend/build 3000 --name frontend --spa
       continue-on-error: false
 
     - name: Save PM2 State
