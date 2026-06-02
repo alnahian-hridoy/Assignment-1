@@ -1,7 +1,7 @@
 {
-  "name": "task-manager-backend",
+  "name": "Online Quiz-backend",
   "version": "1.0.0",
-  "description": "Backend for Task Manager App",
+  "description": "Backend for Online Quiz App",
   "main": "server.js",
   "scripts": {
     "test": "mocha",
