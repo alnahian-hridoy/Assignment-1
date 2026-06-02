@@ -42,8 +42,7 @@ jobs:
     # Frontend
     - name: Install Frontend Dependencies
       working-directory: frontend
-      run: |
-        yarn install
+      run: yarn install
 
     - name: Disable CI warnings
       run: echo "CI=false" >> $GITHUB_ENV
@@ -52,14 +51,25 @@ jobs:
       working-directory: frontend
       run: yarn build
 
-    # PM2 Safe Restart
-    - name: Restart Backend Safely
+    # PM2 Safe Restart with error handling
+    - name: Stop old processes safely
       run: |
-        pm2 restart backend || pm2 start "npm run start" --name backend
+        pm2 stop backend frontend || true
+      continue-on-error: true
 
-    - name: Restart Frontend Safely
+    - name: Start Backend
       run: |
-        pm2 restart frontend || pm2 serve frontend/build 3000 --name frontend --spa
+        cd backend
+        pm2 start "npm run start" --name backend --error $HOME/.pm2/logs/backend-error.log --out $HOME/.pm2/logs/backend-out.log
+      continue-on-error: false
+
+    - name: Start Frontend
+      run: |
+        pm2 serve frontend/build 3000 --name frontend --spa --error $HOME/.pm2/logs/frontend-error.log --out $HOME/.pm2/logs/frontend-out.log
+      continue-on-error: false
 
     - name: Save PM2 State
       run: pm2 save
+
+    - name: Check PM2 Status
+      run: pm2 status
