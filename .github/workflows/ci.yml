@@ -54,13 +54,14 @@ jobs:
     # PM2 Safe Restart with error handling
     - name: Stop old processes safely
       run: |
-        pm2 stop backend frontend || true
+        pm2 stop all || true
+        pm2 delete all || true
       continue-on-error: true
 
     - name: Start Backend
       run: |
         cd backend
-        pm2 start npm --name backend -- run start --error $HOME/.pm2/logs/backend-error.log --out $HOME/.pm2/logs/backend-out.log
+        pm2 start npm --name backend -- run start
       continue-on-error: false
 
     - name: Start Frontend
