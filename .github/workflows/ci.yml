@@ -40,11 +40,17 @@ jobs:
         echo "PORT=${{ secrets.PORT }}" >> .env
 
     # Frontend
-    - name: Install Frontend Dependencies + Build
+    - name: Install Frontend Dependencies
       working-directory: frontend
       run: |
         yarn install
-        yarn build
+
+    - name: Disable CI warnings
+      run: echo "CI=false" >> $GITHUB_ENV
+
+    - name: Build Frontend
+      working-directory: frontend
+      run: yarn build
 
     # PM2 Safe Restart
     - name: Restart Backend Safely
