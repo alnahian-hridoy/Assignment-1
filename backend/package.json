@@ -1,5 +1,5 @@
 {
-  "name": "Online Quiz-backend",
+  "name": "onlinequiz-backend",
   "version": "1.0.0",
   "description": "Backend for Online Quiz App",
   "main": "server.js",
