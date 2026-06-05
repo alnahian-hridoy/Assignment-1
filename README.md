@@ -1,4 +1,4 @@
-# 📚 Quiz Management Portal
+# 📚 Online Quiz Management Portal
 
 A comprehensive full-stack Quiz Management System built with React, Node.js, Express, and MongoDB. This application allows users to take quizzes, track their performance, and view detailed results with real-time scoring.
 
