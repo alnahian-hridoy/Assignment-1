@@ -7,6 +7,12 @@ const EditQuiz = () => {
   const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user && user.role !== 'admin') {
+      navigate('/home');
+    }
+  }, [user, navigate]);
   const [formData, setFormData] = useState({
     title: '',
     description: '',

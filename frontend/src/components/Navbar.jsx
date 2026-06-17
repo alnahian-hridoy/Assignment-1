@@ -31,9 +31,11 @@ const Navbar = () => {
                 <Link to="/upcoming" className="hover:text-purple-200 transition font-medium">
                   Upcoming
                 </Link>
-                <Link to="/create-quiz" className="hover:text-purple-200 transition font-medium">
-                  Create Quiz
-                </Link>
+                {user.role === 'admin' && (
+                  <Link to="/create-quiz" className="hover:text-purple-200 transition font-medium">
+                    Create Quiz
+                  </Link>
+                )}
                 <Link to="/results" className="hover:text-purple-200 transition font-medium">
                   Results
                 </Link>
@@ -91,12 +93,14 @@ const Navbar = () => {
                 >
                   Upcoming
                 </Link>
-                <Link
-                  to="/create-quiz"
-                  className="block hover:text-purple-200 transition font-medium py-2"
-                >
-                  Create Quiz
-                </Link>
+                {user.role === 'admin' && (
+                  <Link
+                    to="/create-quiz"
+                    className="block hover:text-purple-200 transition font-medium py-2"
+                  >
+                    Create Quiz
+                  </Link>
+                )}
                 <Link
                   to="/results"
                   className="block hover:text-purple-200 transition font-medium py-2"

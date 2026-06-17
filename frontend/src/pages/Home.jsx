@@ -112,12 +112,14 @@ const Home = () => {
               </button>
             ))}
           </div>
-          <button
-            onClick={() => navigate('/create-quiz')}
-            className="px-6 py-2 rounded-lg font-semibold bg-gradient-to-r from-green-500 to-teal-500 text-white hover:opacity-90 transition duration-200"
-          >
-            Add New Quiz
-          </button>
+          {user?.role === 'admin' && (
+            <button
+              onClick={() => navigate('/create-quiz')}
+              className="px-6 py-2 rounded-lg font-semibold bg-gradient-to-r from-green-500 to-teal-500 text-white hover:opacity-90 transition duration-200"
+            >
+              Add New Quiz
+            </button>
+          )}
         </div>
 
         {/* Loading State */}
@@ -204,24 +206,28 @@ const Home = () => {
                       >
                         {status === 'ongoing' ? 'Take Quiz' : 'View Details'}
                       </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate(`/edit-quiz/${quiz._id}`);
-                        }}
-                        className="w-full py-3 rounded-lg bg-white border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition duration-200"
-                      >
-                        Edit Quiz
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteQuiz(quiz._id);
-                        }}
-                        className="w-full py-3 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600 transition duration-200"
-                      >
-                        Delete Quiz
-                      </button>
+                      {user?.role === 'admin' && (
+                      <>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/edit-quiz/${quiz._id}`);
+                          }}
+                          className="w-full py-3 rounded-lg bg-white border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition duration-200"
+                        >
+                          Edit Quiz
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteQuiz(quiz._id);
+                          }}
+                          className="w-full py-3 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600 transition duration-200"
+                        >
+                          Delete Quiz
+                        </button>
+                      </>
+                    )}
                     </div>
                   </div>
                 </div>

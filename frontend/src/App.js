@@ -16,6 +16,11 @@ function ProtectedRoute({ children }) {
   return user ? children : <Navigate to="/login" />;
 }
 
+function AdminRoute({ children }) {
+  const { user } = useAuth();
+  return user?.role === 'admin' ? children : <Navigate to="/home" />;
+}
+
 function App() {
   return (
     <Router>
@@ -51,7 +56,9 @@ function App() {
           path="/create-quiz"
           element={
             <ProtectedRoute>
-              <CreateQuiz />
+              <AdminRoute>
+                <CreateQuiz />
+              </AdminRoute>
             </ProtectedRoute>
           }
         />
@@ -59,7 +66,9 @@ function App() {
           path="/edit-quiz/:id"
           element={
             <ProtectedRoute>
-              <EditQuiz />
+              <AdminRoute>
+                <EditQuiz />
+              </AdminRoute>
             </ProtectedRoute>
           }
         />

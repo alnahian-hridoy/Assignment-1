@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../axiosConfig';
 import { useAuth } from '../context/AuthContext';
@@ -17,6 +17,12 @@ const defaultQuestion = {
 const CreateQuiz = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user && user.role !== 'admin') {
+      navigate('/home');
+    }
+  }, [user, navigate]);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
