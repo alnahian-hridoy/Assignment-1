@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../axiosConfig';
+import { useAuth } from '../context/AuthContext';
 
 const Home = () => {
+  const { user } = useAuth();
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
@@ -30,6 +32,22 @@ const Home = () => {
       console.error('Error fetching quizzes:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteQuiz = async (quizId) => {
+    if (!window.confirm('Delete this quiz? This action cannot be undone.')) return;
+
+    try {
+      await axiosInstance.delete(`/api/quizzes/${quizId}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      setQuizzes((prev) => prev.filter((quiz) => quiz._id !== quizId));
+    } catch (error) {
+      console.error('Error deleting quiz:', error);
+      alert('Failed to delete quiz.');
     }
   };
 
@@ -78,20 +96,30 @@ const Home = () => {
         </div>
 
         {/* Filter Tabs */}
-        <div className="flex gap-4 mb-8">
-          {['all', 'upcoming', 'current', 'completed'].map((f) => (
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+          <div className="flex gap-4 flex-wrap">
+            {['all', 'upcoming', 'current', 'completed'].map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`px-6 py-2 rounded-lg font-semibold capitalize transition duration-200 ${
+                  filter === f
+                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
+                    : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+                }`}
+              >
+                {f === 'all' ? 'All Quizzes' : f === 'current' ? 'Ongoing' : f.charAt(0).toUpperCase() + f.slice(1)}
+              </button>
+            ))}
+          </div>
+          {user?.role === 'admin' && (
             <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-6 py-2 rounded-lg font-semibold capitalize transition duration-200 ${
-                filter === f
-                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
-                  : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-              }`}
+              onClick={() => navigate('/create-quiz')}
+              className="px-6 py-2 rounded-lg font-semibold bg-gradient-to-r from-green-500 to-teal-500 text-white hover:opacity-90 transition duration-200"
             >
-              {f === 'all' ? 'All Quizzes' : f === 'current' ? 'Ongoing' : f.charAt(0).toUpperCase() + f.slice(1)}
+              Add New Quiz
             </button>
-          ))}
+          )}
         </div>
 
         {/* Loading State */}
@@ -161,22 +189,46 @@ const Home = () => {
                     </div>
 
                     {/* Action Button */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (status === 'ongoing') {
-                          navigate(`/quiz/${quiz._id}`);
-                        }
-                      }}
-                      disabled={status !== 'ongoing'}
-                      className={`w-full py-3 rounded-lg font-semibold transition duration-200 ${
-                        status === 'ongoing'
-                          ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:opacity-90'
-                          : 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                      }`}
-                    >
-                      {status === 'ongoing' ? 'Take Quiz' : 'View Details'}
-                    </button>
+                    <div className="flex flex-col gap-3">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (status === 'ongoing') {
+                            navigate(`/quiz/${quiz._id}`);
+                          }
+                        }}
+                        disabled={status !== 'ongoing'}
+                        className={`w-full py-3 rounded-lg font-semibold transition duration-200 ${
+                          status === 'ongoing'
+                            ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:opacity-90'
+                            : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                        }`}
+                      >
+                        {status === 'ongoing' ? 'Take Quiz' : 'View Details'}
+                      </button>
+                      {user?.role === 'admin' && (
+                      <>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/edit-quiz/${quiz._id}`);
+                          }}
+                          className="w-full py-3 rounded-lg bg-white border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition duration-200"
+                        >
+                          Edit Quiz
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteQuiz(quiz._id);
+                          }}
+                          className="w-full py-3 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600 transition duration-200"
+                        >
+                          Delete Quiz
+                        </button>
+                      </>
+                    )}
+                    </div>
                   </div>
                 </div>
               );

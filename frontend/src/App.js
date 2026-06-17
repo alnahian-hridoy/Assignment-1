@@ -8,10 +8,17 @@ import CurrentQuiz from './pages/CurrentQuiz';
 import UpcomingQuizzes from './pages/UpcomingQuizzes';
 import Results from './pages/Results';
 import Profile from './pages/Profile';
+import CreateQuiz from './pages/CreateQuiz';
+import EditQuiz from './pages/EditQuiz';
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
   return user ? children : <Navigate to="/login" />;
+}
+
+function AdminRoute({ children }) {
+  const { user } = useAuth();
+  return user?.role === 'admin' ? children : <Navigate to="/home" />;
 }
 
 function App() {
@@ -42,6 +49,26 @@ function App() {
           element={
             <ProtectedRoute>
               <UpcomingQuizzes />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create-quiz"
+          element={
+            <ProtectedRoute>
+              <AdminRoute>
+                <CreateQuiz />
+              </AdminRoute>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/edit-quiz/:id"
+          element={
+            <ProtectedRoute>
+              <AdminRoute>
+                <EditQuiz />
+              </AdminRoute>
             </ProtectedRoute>
           }
         />

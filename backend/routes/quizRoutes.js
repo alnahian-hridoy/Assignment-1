@@ -9,7 +9,7 @@ const {
   updateQuiz,
   deleteQuiz,
 } = require('../controllers/quizController');
-const { protect } = require('../middleware/authMiddleware');
+const { protect, admin } = require('../middleware/authMiddleware');
 const router = express.Router();
 
 router.get('/', getAllQuizzes);
@@ -17,8 +17,8 @@ router.get('/upcoming', getUpcomingQuizzes);
 router.get('/current', getCurrentQuizzes);
 router.get('/completed', getCompletedQuizzes);
 router.get('/:id', getQuizById);
-router.post('/', protect, createQuiz);
-router.put('/:id', protect, updateQuiz);
-router.delete('/:id', protect, deleteQuiz);
+router.post('/', protect, admin, createQuiz);
+router.put('/:id', protect, admin, updateQuiz);
+router.delete('/:id', protect, admin, deleteQuiz);
 
 module.exports = router;
