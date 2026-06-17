@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axiosInstance from '../axiosConfig';
+import { useAuth } from '../context/AuthContext';
 
 const CurrentQuiz = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [quiz, setQuiz] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -68,11 +70,19 @@ const CurrentQuiz = () => {
     }));
 
     try {
-      const response = await axiosInstance.post('/api/results/submit', {
-        quizId: id,
-        answers: answerArray,
-        timeTaken,
-      });
+      const response = await axiosInstance.post(
+        '/api/results/submit',
+        {
+          quizId: id,
+          answers: answerArray,
+          timeTaken,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
 
       setSubmitted(true);
       setTimeout(() => {

@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../axiosConfig';
+import { useAuth } from '../context/AuthContext';
 
 const Home = () => {
+  const { user } = useAuth();
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
@@ -30,6 +32,22 @@ const Home = () => {
       console.error('Error fetching quizzes:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteQuiz = async (quizId) => {
+    if (!window.confirm('Delete this quiz? This action cannot be undone.')) return;
+
+    try {
+      await axiosInstance.delete(`/api/quizzes/${quizId}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      setQuizzes((prev) => prev.filter((quiz) => quiz._id !== quizId));
+    } catch (error) {
+      console.error('Error deleting quiz:', error);
+      alert('Failed to delete quiz.');
     }
   };
 
@@ -169,22 +187,42 @@ const Home = () => {
                     </div>
 
                     {/* Action Button */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (status === 'ongoing') {
-                          navigate(`/quiz/${quiz._id}`);
-                        }
-                      }}
-                      disabled={status !== 'ongoing'}
-                      className={`w-full py-3 rounded-lg font-semibold transition duration-200 ${
-                        status === 'ongoing'
-                          ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:opacity-90'
-                          : 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                      }`}
-                    >
-                      {status === 'ongoing' ? 'Take Quiz' : 'View Details'}
-                    </button>
+                    <div className="flex flex-col gap-3">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (status === 'ongoing') {
+                            navigate(`/quiz/${quiz._id}`);
+                          }
+                        }}
+                        disabled={status !== 'ongoing'}
+                        className={`w-full py-3 rounded-lg font-semibold transition duration-200 ${
+                          status === 'ongoing'
+                            ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:opacity-90'
+                            : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                        }`}
+                      >
+                        {status === 'ongoing' ? 'Take Quiz' : 'View Details'}
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/edit-quiz/${quiz._id}`);
+                        }}
+                        className="w-full py-3 rounded-lg bg-white border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition duration-200"
+                      >
+                        Edit Quiz
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteQuiz(quiz._id);
+                        }}
+                        className="w-full py-3 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600 transition duration-200"
+                      >
+                        Delete Quiz
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
