@@ -78,20 +78,28 @@ const Home = () => {
         </div>
 
         {/* Filter Tabs */}
-        <div className="flex gap-4 mb-8">
-          {['all', 'upcoming', 'current', 'completed'].map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-6 py-2 rounded-lg font-semibold capitalize transition duration-200 ${
-                filter === f
-                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
-                  : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-              }`}
-            >
-              {f === 'all' ? 'All Quizzes' : f === 'current' ? 'Ongoing' : f.charAt(0).toUpperCase() + f.slice(1)}
-            </button>
-          ))}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+          <div className="flex gap-4 flex-wrap">
+            {['all', 'upcoming', 'current', 'completed'].map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`px-6 py-2 rounded-lg font-semibold capitalize transition duration-200 ${
+                  filter === f
+                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
+                    : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+                }`}
+              >
+                {f === 'all' ? 'All Quizzes' : f === 'current' ? 'Ongoing' : f.charAt(0).toUpperCase() + f.slice(1)}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={() => navigate('/create-quiz')}
+            className="px-6 py-2 rounded-lg font-semibold bg-gradient-to-r from-green-500 to-teal-500 text-white hover:opacity-90 transition duration-200"
+          >
+            Add New Quiz
+          </button>
         </div>
 
         {/* Loading State */}

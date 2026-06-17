@@ -8,6 +8,7 @@ import CurrentQuiz from './pages/CurrentQuiz';
 import UpcomingQuizzes from './pages/UpcomingQuizzes';
 import Results from './pages/Results';
 import Profile from './pages/Profile';
+import CreateQuiz from './pages/CreateQuiz';
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
@@ -42,6 +43,14 @@ function App() {
           element={
             <ProtectedRoute>
               <UpcomingQuizzes />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create-quiz"
+          element={
+            <ProtectedRoute>
+              <CreateQuiz />
             </ProtectedRoute>
           }
         />
