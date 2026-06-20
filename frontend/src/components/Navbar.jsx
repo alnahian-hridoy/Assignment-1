@@ -1,9 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { useState } from 'react';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -12,8 +14,19 @@ const Navbar = () => {
     navigate('/login');
   };
 
+  const ThemeToggle = ({ className = '' }) => (
+    <button
+      onClick={toggleTheme}
+      aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      className={`text-xl hover:text-purple-200 transition ${className}`}
+    >
+      {theme === 'dark' ? '☀️' : '🌙'}
+    </button>
+  );
+
   return (
-    <nav className="bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg">
+    <nav className="bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-800 dark:to-blue-900 text-white shadow-lg">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
@@ -23,6 +36,7 @@ const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-6">
+            <ThemeToggle />
             {user ? (
               <>
                 <Link to="/home" className="hover:text-purple-200 transition font-medium">
@@ -67,13 +81,16 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-2xl hover:text-purple-200 transition"
-          >
-            ☰
-          </button>
+          {/* Mobile Controls */}
+          <div className="md:hidden flex items-center gap-4">
+            <ThemeToggle />
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="text-2xl hover:text-purple-200 transition"
+            >
+              ☰
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
