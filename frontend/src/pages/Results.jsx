@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import axiosInstance from '../axiosConfig';
+import { useAuth } from '../context/AuthContext';
 
 const Results = () => {
+  const { user } = useAuth();
   const [searchParams] = useSearchParams();
   const [results, setResults] = useState([]);
   const [selectedResult, setSelectedResult] = useState(null);
@@ -11,8 +13,10 @@ const Results = () => {
   const resultId = searchParams.get('resultId');
 
   useEffect(() => {
-    fetchResults();
-  }, []);
+    if (user) {
+      fetchResults();
+    }
+  }, [user]);
 
   useEffect(() => {
     if (resultId && results.length > 0) {
@@ -25,7 +29,11 @@ const Results = () => {
 
   const fetchResults = async () => {
     try {
-      const response = await axiosInstance.get('/api/results/user');
+      const response = await axiosInstance.get('/api/results/user', {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      });
       setResults(response.data);
       if (resultId) {
         const result = response.data.find((r) => r._id === resultId);
@@ -102,10 +110,10 @@ const Results = () => {
                           : 'border-gray-200 bg-gray-50 hover:border-purple-300'
                       }`}
                     >
-                      <p className="font-semibold text-gray-900">{result.quizId.title}</p>
+                      <p className="font-semibold text-gray-900">{result.quizId?.title || 'Unknown Quiz'}</p>
                       <p className="text-sm text-gray-600">{formatDate(result.completedAt)}</p>
                       <p className={`text-lg font-bold ${result.passed ? 'text-green-600' : 'text-red-600'}`}>
-                        {result.percentage}%
+                        {result.percentage != null ? `${result.percentage}%` : 'N/A'}
                       </p>
                     </button>
                   ))}
@@ -120,7 +128,7 @@ const Results = () => {
               {/* Score Card */}
               <div className="bg-white rounded-lg shadow-lg p-8">
                 <div className="text-center mb-6">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-2">{selectedResult.quizId.title}</h2>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-2">{selectedResult.quizId?.title || 'Unknown Quiz'}</h2>
                   <p className="text-gray-600">{formatDate(selectedResult.completedAt)}</p>
                 </div>
 
@@ -158,7 +166,7 @@ const Results = () => {
                   </div>
                   <div>
                     <p className="text-gray-600 text-sm">Passing Marks</p>
-                    <p className="text-2xl font-bold text-gray-900">{selectedResult.quizId.passingMarks || 'N/A'}</p>
+                    <p className="text-2xl font-bold text-gray-900">{selectedResult.quizId?.passingMarks ?? 'N/A'}</p>
                   </div>
                   <div>
                     <p className="text-gray-600 text-sm">Time Taken</p>
@@ -166,7 +174,7 @@ const Results = () => {
                   </div>
                   <div>
                     <p className="text-gray-600 text-sm">Duration</p>
-                    <p className="text-2xl font-bold text-gray-900">{selectedResult.quizId.duration}m</p>
+                    <p className="text-2xl font-bold text-gray-900">{selectedResult.quizId?.duration ?? 'N/A'}m</p>
                   </div>
                 </div>
               </div>
