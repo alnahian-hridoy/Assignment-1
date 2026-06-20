@@ -98,7 +98,7 @@ const Home = () => {
         {/* Filter Tabs */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div className="flex gap-4 flex-wrap">
-            {['all', 'upcoming', 'current', 'completed'].map((f) => (
+            {['all', 'upcoming', 'current'].map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
