@@ -110,6 +110,95 @@ const deleteQuiz = async (req, res) => {
   }
 };
 
+// Duplicate quiz with all questions
+const duplicateQuiz = async (req, res) => {
+  try {
+    const originalQuiz = await Quiz.findById(req.params.id).populate('questions');
+    if (!originalQuiz) return res.status(404).json({ message: 'Quiz not found' });
+
+    // Create new quiz with duplicated data
+    const newQuiz = await Quiz.create({
+      title: `${originalQuiz.title} (Copy)`,
+      description: originalQuiz.description,
+      createdBy: req.user.id,
+      startDate: originalQuiz.startDate,
+      endDate: originalQuiz.endDate,
+      duration: originalQuiz.duration,
+      totalMarks: originalQuiz.totalMarks,
+      passingMarks: originalQuiz.passingMarks,
+    });
+
+    // Duplicate all questions
+    const questionIds = [];
+    for (const question of originalQuiz.questions) {
+      const newQuestion = await Question.create({
+        quizId: newQuiz._id,
+        questionText: question.questionText,
+        questionType: question.questionType,
+        options: JSON.parse(JSON.stringify(question.options)),
+        marks: question.marks,
+        explanation: question.explanation,
+      });
+      questionIds.push(newQuestion._id);
+    }
+
+    // Update quiz with question IDs
+    newQuiz.questions = questionIds;
+    await newQuiz.save();
+
+    const populatedQuiz = await Quiz.findById(newQuiz._id).populate('questions');
+    res.status(201).json(populatedQuiz);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Update quiz questions
+const updateQuizQuestions = async (req, res) => {
+  try {
+    const { questions } = req.body; // Array of questions with updates
+    const quizId = req.params.id;
+
+    const quiz = await Quiz.findById(quizId);
+    if (!quiz) return res.status(404).json({ message: 'Quiz not found' });
+
+    // Process each question
+    for (const questionData of questions) {
+      if (questionData._id) {
+        // Update existing question
+        await Question.findByIdAndUpdate(
+          questionData._id,
+          {
+            questionText: questionData.questionText,
+            questionType: questionData.questionType,
+            options: questionData.options,
+            marks: questionData.marks,
+            explanation: questionData.explanation,
+          },
+          { new: true }
+        );
+      } else {
+        // Create new question
+        const newQuestion = await Question.create({
+          quizId,
+          questionText: questionData.questionText,
+          questionType: questionData.questionType,
+          options: questionData.options,
+          marks: questionData.marks,
+          explanation: questionData.explanation,
+        });
+        quiz.questions.push(newQuestion._id);
+      }
+    }
+
+    await quiz.save();
+    const updatedQuiz = await Quiz.findById(quizId).populate('questions');
+    res.json(updatedQuiz);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getAllQuizzes,
   getUpcomingQuizzes,
@@ -119,4 +208,6 @@ module.exports = {
   createQuiz,
   updateQuiz,
   deleteQuiz,
+  duplicateQuiz,
+  updateQuizQuestions,
 };
