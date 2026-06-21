@@ -9,13 +9,14 @@ class TrueFalseQuestion extends BaseQuestion {
   }
 
   // answer: the student's choice (e.g. "True"/"False" or a boolean)
-  // Should return the marks awarded.
+  // Returns { marks, isCorrect, needsReview } so all question types share one shape.
   evaluate(answer) {
-    if (answer === this.getCorrectOption().text) {
-      return this.getMaxMarks()
-    } else {
-      return 0
-    }
+    const isCorrect = answer === this.getCorrectOption().text;
+    return {
+      marks: isCorrect ? this.getMaxMarks() : 0,
+      isCorrect,
+      needsReview: false,
+    };
   }
 }
 

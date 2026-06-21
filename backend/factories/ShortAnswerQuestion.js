@@ -14,7 +14,8 @@ class ShortAnswerQuestion extends BaseQuestion {
   // Should NOT auto-award marks — flag it for manual grading instead.
   evaluate(answer) {
     // No correct option to compare against — flag for the admin to grade.
-    return { needsReview: true, marks: null, answer };
+    // Shares the { marks, isCorrect, needsReview } shape; marks stay 0 until graded.
+    return { marks: 0, isCorrect: null, needsReview: true };
   }
 }
 
