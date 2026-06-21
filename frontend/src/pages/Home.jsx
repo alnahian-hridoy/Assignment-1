@@ -51,6 +51,21 @@ const Home = () => {
     }
   };
 
+  const handleDuplicateQuiz = async (quizId) => {
+    try {
+      const response = await axiosInstance.post(`/api/quizzes/${quizId}/duplicate`, {}, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      setQuizzes((prev) => [...prev, response.data]);
+      alert('Quiz duplicated successfully!');
+    } catch (error) {
+      console.error('Error duplicating quiz:', error);
+      alert('Failed to duplicate quiz.');
+    }
+  };
+
   const getQuizStatus = (quiz) => {
     const now = new Date();
     if (now < new Date(quiz.startDate)) return 'upcoming';
@@ -216,6 +231,24 @@ const Home = () => {
                           className="w-full py-3 rounded-lg bg-white border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition duration-200"
                         >
                           Edit Quiz
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/edit-quiz-questions/${quiz._id}`);
+                          }}
+                          className="w-full py-3 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 transition duration-200"
+                        >
+                          Edit Questions
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDuplicateQuiz(quiz._id);
+                          }}
+                          className="w-full py-3 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition duration-200"
+                        >
+                          Duplicate Quiz
                         </button>
                         <button
                           onClick={(e) => {

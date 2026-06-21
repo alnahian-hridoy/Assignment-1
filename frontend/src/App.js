@@ -10,6 +10,7 @@ import Results from './pages/Results';
 import Profile from './pages/Profile';
 import CreateQuiz from './pages/CreateQuiz';
 import EditQuiz from './pages/EditQuiz';
+import EditQuizQuestions from './pages/EditQuizQuestions';
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
@@ -68,6 +69,16 @@ function App() {
             <ProtectedRoute>
               <AdminRoute>
                 <EditQuiz />
+              </AdminRoute>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/edit-quiz-questions/:id"
+          element={
+            <ProtectedRoute>
+              <AdminRoute>
+                <EditQuizQuestions />
               </AdminRoute>
             </ProtectedRoute>
           }
