@@ -9,13 +9,14 @@ class MultipleChoiceQuestion extends BaseQuestion {
   }
 
   // answer: whatever the student submitted (e.g. the chosen option text or id)
-  // Should return the marks awarded.
+  // Returns { marks, isCorrect, needsReview } so all question types share one shape.
   evaluate(answer) {
-    if (answer === this.getCorrectOption().text) {
-      return this.getMaxMarks()
-    } else {
-      return 0
-    }
+    const isCorrect = answer === this.getCorrectOption().text;
+    return {
+      marks: isCorrect ? this.getMaxMarks() : 0,
+      isCorrect,
+      needsReview: false,
+    };
   }
 }
 
