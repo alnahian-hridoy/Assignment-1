@@ -40,27 +40,27 @@ const TaskForm = ({ tasks, setTasks, editingTask, setEditingTask }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 shadow-md rounded mb-6">
-      <h1 className="text-2xl font-bold mb-4">{editingTask ? 'Edit Task' : 'Add Task'}</h1>
+    <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 p-6 shadow-md rounded mb-6">
+      <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">{editingTask ? 'Edit Task' : 'Add Task'}</h1>
       <input
         type="text"
         placeholder="Title"
         value={formData.title}
         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-        className="w-full mb-4 p-2 border rounded"
+        className="w-full mb-4 p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded"
       />
       <input
         type="text"
         placeholder="Description"
         value={formData.description}
         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-        className="w-full mb-4 p-2 border rounded"
+        className="w-full mb-4 p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded"
       />
       <input
         type="date"
         value={formData.deadline}
         onChange={(e) => setFormData({ ...formData, deadline: e.target.value })}
-        className="w-full mb-4 p-2 border rounded"
+        className="w-full mb-4 p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded"
       />
       <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded">
         {editingTask ? 'Update Task' : 'Add Task'}

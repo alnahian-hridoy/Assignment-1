@@ -224,38 +224,38 @@ const CreateQuiz = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 p-6">
       <div className="max-w-5xl mx-auto space-y-8">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Create a New Quiz</h1>
-          <p className="text-gray-600 text-lg">Add both the quiz details and the first questions for your prototype.</p>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">Create a New Quiz</h1>
+          <p className="text-gray-600 dark:text-gray-300 text-lg">Add both the quiz details and the first questions for your prototype.</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-xl p-8 space-y-8">
-          {message && <div className="rounded-lg bg-green-50 border border-green-200 text-green-700 p-4">{message}</div>}
-          {error && <div className="rounded-lg bg-red-50 border border-red-200 text-red-700 p-4">{error}</div>}
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-8 space-y-8">
+          {message && <div className="rounded-lg bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 p-4">{message}</div>}
+          {error && <div className="rounded-lg bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 p-4">{error}</div>}
 
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Quiz Title</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Quiz Title</label>
                 <input
                   type="text"
                   name="title"
                   value={formData.title}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                   placeholder="Enter quiz title"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                   rows="4"
                   placeholder="Describe the quiz objectives"
                 />
@@ -264,24 +264,24 @@ const CreateQuiz = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Start Date</label>
                 <input
                   type="datetime-local"
                   name="startDate"
                   value={formData.startDate}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">End Date</label>
                 <input
                   type="datetime-local"
                   name="endDate"
                   value={formData.endDate}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                   required
                 />
               </div>
@@ -289,43 +289,43 @@ const CreateQuiz = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Duration (mins)</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Duration (mins)</label>
                 <input
                   type="number"
                   name="duration"
                   min="1"
                   value={formData.duration}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Total Marks</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Total Marks</label>
                 <input
                   type="number"
                   name="totalMarks"
                   min="1"
                   value={formData.totalMarks}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Passing Marks</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Passing Marks</label>
                 <input
                   type="number"
                   name="passingMarks"
                   min="0"
                   value={formData.passingMarks}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
               </div>
             </div>
 
             <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-gray-900">Quiz Questions</h2>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Quiz Questions</h2>
                 <button
                   type="button"
                   onClick={addQuestion}
@@ -336,9 +336,9 @@ const CreateQuiz = () => {
               </div>
 
               {questions.map((question, questionIndex) => (
-                <div key={questionIndex} className="border border-gray-200 rounded-2xl p-6 bg-slate-50">
+                <div key={questionIndex} className="border border-gray-200 dark:border-gray-700 rounded-2xl p-6 bg-slate-50 dark:bg-gray-900">
                   <div className="flex items-center justify-between gap-4 mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Question {questionIndex + 1}</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Question {questionIndex + 1}</h3>
                     <button
                       type="button"
                       onClick={() => removeQuestion(questionIndex)}
@@ -350,22 +350,22 @@ const CreateQuiz = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Question Text</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Question Text</label>
                       <textarea
                         name="questionText"
                         value={question.questionText}
                         onChange={(e) => handleQuestionChange(questionIndex, 'questionText', e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                         rows="3"
                         placeholder="Write the question here"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Question Type</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Question Type</label>
                       <select
                         value={question.questionType}
                         onChange={(e) => handleQuestionTypeChange(questionIndex, e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                       >
                         <option value="multiple-choice">Multiple Choice</option>
                         <option value="true-false">True / False</option>
@@ -376,22 +376,22 @@ const CreateQuiz = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Marks</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Marks</label>
                       <input
                         type="number"
                         min="1"
                         value={question.marks}
                         onChange={(e) => handleQuestionChange(questionIndex, 'marks', e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Explanation</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Explanation</label>
                       <input
                         type="text"
                         value={question.explanation}
                         onChange={(e) => handleQuestionChange(questionIndex, 'explanation', e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                         placeholder="Optional explanation or feedback"
                       />
                     </div>
@@ -400,7 +400,7 @@ const CreateQuiz = () => {
                   {(question.questionType === 'multiple-choice' || question.questionType === 'true-false') && (
                     <div className="mt-6 space-y-4">
                       <div className="flex items-center justify-between mb-3">
-                        <p className="text-sm font-medium text-gray-700">Options</p>
+                        <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Options</p>
                         {question.questionType === 'multiple-choice' && (
                           <button
                             type="button"
@@ -420,7 +420,7 @@ const CreateQuiz = () => {
                                 type="text"
                                 value={option.text}
                                 onChange={(e) => handleOptionChange(questionIndex, optionIndex, 'text', e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                                 placeholder={
                                   question.questionType === 'true-false'
                                     ? option.text
@@ -430,7 +430,7 @@ const CreateQuiz = () => {
                               />
                             </div>
                             <div className="col-span-3">
-                              <label className="flex items-center gap-2 text-sm text-gray-700">
+                              <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
                                 <input
                                   type="radio"
                                   name={`correct-${questionIndex}`}

@@ -102,12 +102,12 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Quiz Management Portal</h1>
-          <p className="text-gray-600 text-lg">Welcome back! Choose a quiz to get started.</p>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">Quiz Management Portal</h1>
+          <p className="text-gray-600 dark:text-gray-300 text-lg">Welcome back! Choose a quiz to get started.</p>
         </div>
 
         {/* Filter Tabs */}
@@ -120,7 +120,7 @@ const Home = () => {
                 className={`px-6 py-2 rounded-lg font-semibold capitalize transition duration-200 ${
                   filter === f
                     ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
-                    : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700'
                 }`}
               >
                 {f === 'all' ? 'All Quizzes' : f === 'current' ? 'Ongoing' : f.charAt(0).toUpperCase() + f.slice(1)}
@@ -142,7 +142,7 @@ const Home = () => {
           <div className="flex justify-center items-center h-64">
             <div className="text-center">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-              <p className="mt-4 text-gray-600">Loading quizzes...</p>
+              <p className="mt-4 text-gray-600 dark:text-gray-300">Loading quizzes...</p>
             </div>
           </div>
         )}
@@ -150,7 +150,7 @@ const Home = () => {
         {/* Quiz Cards Grid */}
         {!loading && quizzes.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-600 text-lg">No quizzes available in this category.</p>
+            <p className="text-gray-600 dark:text-gray-300 text-lg">No quizzes available in this category.</p>
           </div>
         )}
 
@@ -161,7 +161,7 @@ const Home = () => {
               return (
                 <div
                   key={quiz._id}
-                  className="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 overflow-hidden cursor-pointer transform hover:scale-105"
+                  className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition duration-300 overflow-hidden cursor-pointer transform hover:scale-105"
                   onClick={() => status === 'ongoing' && navigate(`/quiz/${quiz._id}`)}
                 >
                   {/* Card Header */}
@@ -180,25 +180,25 @@ const Home = () => {
                     {/* Quiz Info */}
                     <div className="space-y-3 mb-6">
                       <div className="flex items-center justify-between">
-                        <span className="text-gray-600">Duration:</span>
-                        <span className="font-semibold text-gray-900">{quiz.duration} minutes</span>
+                        <span className="text-gray-600 dark:text-gray-300">Duration:</span>
+                        <span className="font-semibold text-gray-900 dark:text-gray-100">{quiz.duration} minutes</span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-gray-600">Total Marks:</span>
-                        <span className="font-semibold text-gray-900">{quiz.totalMarks}</span>
+                        <span className="text-gray-600 dark:text-gray-300">Total Marks:</span>
+                        <span className="font-semibold text-gray-900 dark:text-gray-100">{quiz.totalMarks}</span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-gray-600">Passing Marks:</span>
-                        <span className="font-semibold text-gray-900">{quiz.passingMarks || 'N/A'}</span>
+                        <span className="text-gray-600 dark:text-gray-300">Passing Marks:</span>
+                        <span className="font-semibold text-gray-900 dark:text-gray-100">{quiz.passingMarks || 'N/A'}</span>
                       </div>
                     </div>
 
                     {/* Dates */}
-                    <div className="border-t pt-4 mb-6">
-                      <p className="text-sm text-gray-600 mb-2">
+                    <div className="border-t dark:border-gray-700 pt-4 mb-6">
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
                         <strong>Starts:</strong> {formatDate(quiz.startDate)} at {formatTime(quiz.startDate)}
                       </p>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
                         <strong>Ends:</strong> {formatDate(quiz.endDate)} at {formatTime(quiz.endDate)}
                       </p>
                     </div>
@@ -216,7 +216,7 @@ const Home = () => {
                         className={`w-full py-3 rounded-lg font-semibold transition duration-200 ${
                           status === 'ongoing'
                             ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:opacity-90'
-                            : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                            : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
                         }`}
                       >
                         {status === 'ongoing' ? 'Take Quiz' : 'View Details'}
@@ -228,7 +228,7 @@ const Home = () => {
                             e.stopPropagation();
                             navigate(`/edit-quiz/${quiz._id}`);
                           }}
-                          className="w-full py-3 rounded-lg bg-white border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition duration-200"
+                          className="w-full py-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-200"
                         >
                           Edit Quiz
                         </button>
