@@ -51,6 +51,21 @@ const Home = () => {
     }
   };
 
+  const handleDuplicateQuiz = async (quizId) => {
+    try {
+      const response = await axiosInstance.post(`/api/quizzes/${quizId}/duplicate`, {}, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      setQuizzes((prev) => [...prev, response.data]);
+      alert('Quiz duplicated successfully!');
+    } catch (error) {
+      console.error('Error duplicating quiz:', error);
+      alert('Failed to duplicate quiz.');
+    }
+  };
+
   const getQuizStatus = (quiz) => {
     const now = new Date();
     if (now < new Date(quiz.startDate)) return 'upcoming';
@@ -98,7 +113,7 @@ const Home = () => {
         {/* Filter Tabs */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div className="flex gap-4 flex-wrap">
-            {['all', 'upcoming', 'current', 'completed'].map((f) => (
+            {['all', 'upcoming', 'current'].map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
@@ -216,6 +231,24 @@ const Home = () => {
                           className="w-full py-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-200"
                         >
                           Edit Quiz
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/edit-quiz-questions/${quiz._id}`);
+                          }}
+                          className="w-full py-3 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 transition duration-200"
+                        >
+                          Edit Questions
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDuplicateQuiz(quiz._id);
+                          }}
+                          className="w-full py-3 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition duration-200"
+                        >
+                          Duplicate Quiz
                         </button>
                         <button
                           onClick={(e) => {
