@@ -154,29 +154,39 @@ const CurrentQuiz = () => {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 mb-6">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">{question.questionText}</h2>
 
-          {/* Options */}
-          <div className="space-y-4">
-            {question.options && question.options.map((option, idx) => (
-              <label
-                key={idx}
-                className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition duration-200 ${
-                  answers[question._id] === option.text
-                    ? 'border-purple-600 bg-purple-50'
-                    : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 hover:border-purple-300'
-                }`}
-              >
-                <input
-                  type="radio"
-                  name={`question-${question._id}`}
-                  value={option.text}
-                  checked={answers[question._id] === option.text}
-                  onChange={() => handleAnswer(option.text)}
-                  className="w-4 h-4 text-purple-600 cursor-pointer"
-                />
-                <span className="ml-4 text-gray-900 dark:text-gray-100 font-medium">{option.text}</span>
-              </label>
-            ))}
-          </div>
+          {/* Answer input: free-text for short-answer, options for the rest */}
+          {question.questionType === 'short-answer' ? (
+            <input
+              type="text"
+              value={answers[question._id] || ''}
+              onChange={(e) => handleAnswer(e.target.value)}
+              placeholder="Type your answer"
+              className="w-full p-4 border-2 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:border-purple-600"
+            />
+          ) : (
+            <div className="space-y-4">
+              {question.options && question.options.map((option, idx) => (
+                <label
+                  key={idx}
+                  className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition duration-200 ${
+                    answers[question._id] === option.text
+                      ? 'border-purple-600 bg-purple-50'
+                      : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 hover:border-purple-300'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name={`question-${question._id}`}
+                    value={option.text}
+                    checked={answers[question._id] === option.text}
+                    onChange={() => handleAnswer(option.text)}
+                    className="w-4 h-4 text-purple-600 cursor-pointer"
+                  />
+                  <span className="ml-4 text-gray-900 dark:text-gray-100 font-medium">{option.text}</span>
+                </label>
+              ))}
+            </div>
+          )}
 
           {question.explanation && (
             <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg">

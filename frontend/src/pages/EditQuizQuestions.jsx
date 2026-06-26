@@ -46,7 +46,12 @@ const EditQuizQuestions = () => {
           questionType: q.questionType,
           marks: q.marks,
           explanation: q.explanation,
-          options: q.options,
+          // Legacy short-answer questions were saved with no options; give them
+          // an editable slot so an admin can add a model answer.
+          options:
+            q.questionType === 'short-answer' && (!q.options || q.options.length === 0)
+              ? [{ text: '', isCorrect: true }]
+              : q.options,
         }));
         setQuestions(formattedQuestions);
       } catch (err) {
@@ -123,6 +128,8 @@ const EditQuizQuestions = () => {
             { text: 'True', isCorrect: false },
             { text: 'False', isCorrect: false },
           ]
+        : value === 'short-answer'
+        ? [{ text: '', isCorrect: true }]
         : [
             { text: '', isCorrect: false },
             { text: '', isCorrect: false },
@@ -190,7 +197,7 @@ const EditQuizQuestions = () => {
             _id: q._id || undefined,
             questionText: q.questionText,
             questionType: q.questionType,
-            options: q.questionType === 'short-answer' ? [] : q.options,
+            options: q.options,
             marks: q.marks,
             explanation: q.explanation,
           })),
@@ -378,6 +385,22 @@ const EditQuizQuestions = () => {
                           </div>
                         ))}
                       </div>
+                    </div>
+                  )}
+
+                  {question.questionType === 'short-answer' && (
+                    <div className="mt-6">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Correct Answer</label>
+                      <input
+                        type="text"
+                        value={question.options[0]?.text || ''}
+                        onChange={(e) => handleOptionChange(questionIndex, 0, 'text', e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        placeholder="Model answer (e.g. Canberra)"
+                      />
+                      <p className="mt-2 text-xs text-gray-500">
+                        Student answers are matched to this, ignoring case. Leave blank to grade manually.
+                      </p>
                     </div>
                   )}
                 </div>

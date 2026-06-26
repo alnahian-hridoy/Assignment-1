@@ -1,6 +1,7 @@
 const Result = require('../models/Result');
 const Quiz = require('../models/Quiz');
 const Question = require('../models/Question');
+const QuestionFactory = require('../factories/QuestionFactory');
 
 // Get user results
 const getUserResults = async (req, res) => {
@@ -55,17 +56,14 @@ const submitQuiz = async (req, res) => {
       const question = quiz.questions.find((q) => q._id.toString() === answer.questionId);
       if (!question) continue;
 
-      const selectedOption = question.options.find((opt) => opt.text === answer.selectedOption);
-      const isCorrect = selectedOption ? selectedOption.isCorrect : false;
-
-      if (isCorrect) {
-        obtainedMarks += question.marks;
-      }
+      // Factory returns the right question type; evaluate() scores it.
+      const outcome = QuestionFactory.create(question).evaluate(answer.selectedOption);
+      obtainedMarks += outcome.marks;
 
       processedAnswers.push({
         questionId: answer.questionId,
         selectedOption: answer.selectedOption,
-        isCorrect,
+        isCorrect: outcome.isCorrect,
       });
     }
 
