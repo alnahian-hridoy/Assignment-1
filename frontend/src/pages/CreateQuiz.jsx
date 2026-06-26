@@ -108,6 +108,8 @@ const CreateQuiz = () => {
             { text: 'True', isCorrect: false },
             { text: 'False', isCorrect: false },
           ]
+        : value === 'short-answer'
+        ? [{ text: '', isCorrect: true }]
         : [
             { text: '', isCorrect: false },
             { text: '', isCorrect: false },
@@ -200,7 +202,7 @@ const CreateQuiz = () => {
             quizId,
             questionText: question.questionText,
             questionType: question.questionType,
-            options: question.questionType === 'short-answer' ? [] : question.options,
+            options: question.options,
             marks: question.marks,
             explanation: question.explanation,
           },
@@ -468,6 +470,22 @@ const CreateQuiz = () => {
                           </div>
                         ))}
                       </div>
+                    </div>
+                  )}
+
+                  {question.questionType === 'short-answer' && (
+                    <div className="mt-6">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Correct Answer</label>
+                      <input
+                        type="text"
+                        value={question.options[0]?.text || ''}
+                        onChange={(e) => handleOptionChange(questionIndex, 0, 'text', e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        placeholder="Model answer (e.g. Canberra)"
+                      />
+                      <p className="mt-2 text-xs text-gray-500">
+                        Student answers are matched to this, ignoring case. Leave blank to grade manually.
+                      </p>
                     </div>
                   )}
                 </div>

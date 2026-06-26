@@ -28,11 +28,20 @@ const tfQuestion = {
   ],
 };
 
+// Short-answer with a stored model answer -> auto-graded.
+const saWithAnswer = {
+  questionText: 'Capital of Australia?',
+  questionType: 'short-answer',
+  marks: 10,
+  options: [{ text: 'Canberra', isCorrect: true }],
+};
+
+// Legacy/open-ended short-answer with no model answer -> manual review.
 const saQuestion = {
   questionText: 'Explain the factory pattern.',
   questionType: 'short-answer',
   marks: 10,
-  options: [], // short-answer stores no options
+  options: [], // no model answer stored
 };
 
 describe('MultipleChoiceQuestion.evaluate', () => {
@@ -60,7 +69,22 @@ describe('TrueFalseQuestion.evaluate', () => {
 });
 
 describe('ShortAnswerQuestion.evaluate', () => {
-  it('does not auto-grade and flags for manual review', () => {
+  it('auto-grades a correct answer against the model answer', () => {
+    const q = new ShortAnswerQuestion(saWithAnswer);
+    expect(q.evaluate('Canberra')).to.deep.equal({ marks: 10, isCorrect: true, needsReview: false });
+  });
+
+  it('matches the model answer case-insensitively', () => {
+    const q = new ShortAnswerQuestion(saWithAnswer);
+    expect(q.evaluate('  canberra ')).to.deep.equal({ marks: 10, isCorrect: true, needsReview: false });
+  });
+
+  it('awards zero marks for a wrong answer', () => {
+    const q = new ShortAnswerQuestion(saWithAnswer);
+    expect(q.evaluate('Sydney')).to.deep.equal({ marks: 0, isCorrect: false, needsReview: false });
+  });
+
+  it('falls back to manual review when no model answer is stored', () => {
     const q = new ShortAnswerQuestion(saQuestion);
     expect(q.evaluate('any text')).to.deep.equal({ marks: 0, isCorrect: null, needsReview: true });
   });

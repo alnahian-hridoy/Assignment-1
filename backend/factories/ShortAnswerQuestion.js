@@ -1,21 +1,31 @@
 const BaseQuestion = require('./BaseQuestion');
 
 // Concrete product: a short-answer question.
-// NOT auto-graded — short-answer questions are stored with no options
-// (options: []), so there is no correct answer to compare against.
-// These are graded manually by the quiz admin, so evaluate() should
-// signal that the answer needs human review rather than returning marks.
+// If a model answer is stored (a single option flagged isCorrect), the response
+// is auto-graded with a case-insensitive match. If no model answer is stored
+// (legacy/open-ended questions with options: []), it falls back to manual review.
 class ShortAnswerQuestion extends BaseQuestion {
   constructor(question) {
     super(question);
   }
 
-  // answer: the student's free-text response (kept for the admin to read)
-  // Should NOT auto-award marks — flag it for manual grading instead.
+  // answer: the student's free-text response.
+  // Returns the shared { marks, isCorrect, needsReview } shape.
   evaluate(answer) {
-    // No correct option to compare against — flag for the admin to grade.
-    // Shares the { marks, isCorrect, needsReview } shape; marks stay 0 until graded.
-    return { marks: 0, isCorrect: null, needsReview: true };
+    const correct = this.getCorrectOption();
+
+    // No model answer to compare against — defer to the admin to grade.
+    if (!correct || !correct.text) {
+      return { marks: 0, isCorrect: null, needsReview: true };
+    }
+
+    const isCorrect =
+      String(answer || '').trim().toLowerCase() === correct.text.trim().toLowerCase();
+    return {
+      marks: isCorrect ? this.getMaxMarks() : 0,
+      isCorrect,
+      needsReview: false,
+    };
   }
 }
 
