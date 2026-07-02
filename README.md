@@ -2,6 +2,15 @@
 
 A comprehensive full-stack Quiz Management System built with React, Node.js, Express, and MongoDB. This application allows users to take quizzes, track their performance, and view detailed results with real-time scoring.
 
+## Sign-in Creds
+**Admin-**
+Username: admin@gmail.com
+Pass: Assignment2
+
+**User-**
+Username: nahianhridoy7244@gmail.com
+Pass: Qwert123
+
 ## Features
 
 ### User Authentication
@@ -10,6 +19,7 @@ A comprehensive full-stack Quiz Management System built with React, Node.js, Exp
 - Password hashing with bcrypt
 - Profile management
 - Protected routes
+- Profile view & update
 
 ### Quiz Management
 - Browse all quizzes with detailed information
@@ -17,6 +27,7 @@ A comprehensive full-stack Quiz Management System built with React, Node.js, Exp
 - Real-time quiz timer with countdown
 - Multiple question types
 - Progress tracking during quiz
+- Quiz duplication & question editing
 
 ### Quiz Taking
 - Clean, intuitive quiz interface
@@ -38,6 +49,7 @@ A comprehensive full-stack Quiz Management System built with React, Node.js, Exp
 - Smooth animations and transitions
 - Professional UI with Tailwind CSS
 - Accessible and intuitive navigation
+- Dark/Light mode toggle with theme persistence
 
 ## Technology Stack
 
@@ -131,31 +143,38 @@ chmod +x setup.sh
 ## 📁 Project Structure
 
 ```
-taskmanager/
-├── backend/
-│   ├── models/
-│   │   ├── User.js
-│   │   ├── Quiz.js
-│   │   ├── Question.js
-│   │   └── Result.js
-│   ├── controllers/
-│   ├── routes/
-│   ├── middleware/
-│   ├── config/
-│   ├── server.js
-│   └── package.json
-├── frontend/
-│   ├── src/
-│   │   ├── pages/
-│   │   ├── components/
-│   │   ├── context/
-│   │   ├── App.js
-│   │   └── index.js
-│   └── package.json
-├── SETUP_GUIDE.md
-├── setup.sh
-├── setup.bat
-└── README.md
+ASSIGNMENT-1/
+│
+├── backend/                     # Node.js backend server
+│   ├── config/                  # Configuration files (DB, environment)
+│   ├── controllers/             # Route controllers (Auth, Quiz, User, etc.)
+│   ├── middleware/              # Custom middleware (Auth, Validation, Logging)
+│   ├── models/                  # Mongoose models for MongoDB collections
+│   ├── routes/                  # Express route definitions
+│   ├── test/                    # Backend test cases
+│   ├── .env                     # Environment variables
+│   ├── .env.example             # Example environment file
+│   ├── package.json             # Backend dependencies and scripts
+│   ├── package-lock.json
+│   └── server.js                # Entry point for backend server
+│
+├── frontend/                    # React frontend application
+│   ├── src/                     # Source code (components, pages, assets)
+│   ├── public/                  # Static files
+│   ├── package.json             # Frontend dependencies and scripts
+│   └── README.md                # Frontend-specific documentation
+│
+├── .github/                     # GitHub Actions workflows (CI/CD)
+│
+├── .gitignore                   # Ignored files for Git
+├── example_test.js              # Example test script
+├── FILES_SUMMARY.md             # Summary of project files
+├── IMPLEMENTATION.md            # Implementation details and logic explanation
+├── README.md                    # Main project documentation
+├── SETUP_GUIDE.md               # Setup and installation instructions
+├── setup.bat                    # Windows setup script
+├── package.json                 # Root-level dependencies (if any)
+└── package-lock.json
 ```
 
 ## API Endpoints
